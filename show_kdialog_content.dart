@@ -3,14 +3,21 @@ import 'package:tareo_app/kdialogs/show_kdialog.dart';
 
 Future<T?> showKDialogContent<T>(
   BuildContext context, {
-  double contentPadding = 24,
+  EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(horizontal: 24),
+  EdgeInsetsGeometry scrollPadding = const EdgeInsets.only(bottom: 24),
   TextButton? titleTextButton,
+  String? title = "Title!",
   String saveBtnText = "Save",
   void Function()? onSave,
+  bool closeOnOutsideTab = false,
   required Widget Function(BuildContext context) builder,
 }) async {
+  final locale = Localizations.localeOf(context);
+  if (locale.languageCode == 'es') saveBtnText = "Guardar";
+  if (locale.languageCode == 'es') title = "Titulo!";
   return await showKDialog(
     context,
+    closeOnOutsideTab: closeOnOutsideTab,
     builder: (context) {
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
@@ -23,11 +30,11 @@ Future<T?> showKDialogContent<T>(
               onPressed: () => Navigator.of(context).pop(null),
               icon: const Icon(Icons.close),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 1.0),
+            Padding(
+              padding: const EdgeInsets.only(top: 1.0),
               child: Text(
-                "Texto de la ventana",
-                style: TextStyle(
+                title ?? "",
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                 ),
@@ -53,14 +60,17 @@ Future<T?> showKDialogContent<T>(
         ),
         contentPadding: EdgeInsets.zero,
         content: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: contentPadding),
+          padding: scrollPadding,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: contentPadding),
+            padding: contentPadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [builder(context)],
+              children: [
+                const SizedBox(width: double.maxFinite),
+                builder(context),
+              ],
             ),
           ),
         ),

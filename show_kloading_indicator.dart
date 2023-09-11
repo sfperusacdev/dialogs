@@ -18,17 +18,21 @@ Future<void Function()> showKLoadingIndicatorWithMessage(
       return WillPopScope(
         onWillPop: () async => false,
         child: AlertDialog(
-          content: Row(
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(width: 22.0),
-              Expanded(
-                child: Text(
-                  message,
-                  style: textStyle,
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(width: 22.0),
+                Expanded(
+                  child: Text(
+                    message,
+                    style: textStyle,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

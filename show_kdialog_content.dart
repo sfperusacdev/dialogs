@@ -12,9 +12,6 @@ Future<T?> showKDialogContent<T>(
   bool closeOnOutsideTab = false,
   required Widget Function(BuildContext context) builder,
 }) async {
-  final locale = Localizations.localeOf(context);
-  if (locale.languageCode == 'es') saveBtnText = "Guardar";
-  if (locale.languageCode == 'es') title = "Titulo!";
   return await showKDialog(
     context,
     closeOnOutsideTab: closeOnOutsideTab,

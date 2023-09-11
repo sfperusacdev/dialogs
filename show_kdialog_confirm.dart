@@ -8,16 +8,11 @@ Future<bool?> showKDialogConfirm(
   String acceptText = "ACCEPT",
   String cancelText = "CANCEL",
 }) async {
-  final locale = Localizations.localeOf(context);
-  if (locale.languageCode == 'es') {
-    acceptText = "ACEPTAR";
-    cancelText = "CANCELAR";
-    title = "Confirmar";
-  }
   return await showKDialogContent<bool>(
     context,
     scrollPadding: const EdgeInsets.only(bottom: 4.0),
     title: title,
+    closeOnOutsideTab: false,
     builder: (context) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

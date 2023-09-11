@@ -45,7 +45,7 @@ Future<void Function()> showKLoadingIndicatorWithMessage(
   return clouser ?? () => {};
 }
 
-Future<void Function()> showKLoadingIndicator<T>(BuildContext context) async {
+Future<void Function()> showKLoadingIndicator(BuildContext context) async {
   void Function()? clouser;
   showDialog(
     context: context,

@@ -3,22 +3,35 @@ import 'package:tareo_app/kdialogs/show_kbottom_error.dart';
 import 'package:tareo_app/kdialogs/show_kdialog_confirm.dart';
 import 'package:tareo_app/kdialogs/show_kloading_indicator.dart';
 
+SnackBar _snackBar({String? message}) {
+  message ??= 'Operation completed successfully';
+  return SnackBar(
+    behavior: SnackBarBehavior.floating,
+    duration: const Duration(milliseconds: 1500),
+    content: Text(message),
+  );
+}
+
 Future<T?> showKLoadingProcess<T>(
   BuildContext context, {
   required Future<T> Function() doProcess,
   void Function(T value)? onSuccess,
   void Function(String errMessage)? onError,
   bool retryable = false,
-  bool confirmacionRequerida = false,
-  String confirmacionMessage = "Are you sure you want to proceed with this operation?",
+  bool confirmationRequired = false,
+  String? confirmationTitle,
+  String confirmationMessage = "Are you sure you want to proceed with this operation?",
+  bool showSuccessSnackBar = false,
+  String? successMessage,
   String acceptText = "ACCEPT",
   String retryText = "RETRY",
   String? loadingMessage,
 }) async {
-  if (confirmacionRequerida) {
+  if (confirmationRequired) {
     final confirmed = await showKDialogConfirm(
       context,
-      message: confirmacionMessage,
+      title: confirmationTitle,
+      message: confirmationMessage,
     );
     if (!(confirmed ?? false)) return null;
   }
@@ -33,6 +46,8 @@ Future<T?> showKLoadingProcess<T>(
       results = await doProcess();
       closeloader();
       if (onSuccess != null && results != null) onSuccess(results);
+      if (context.mounted && (showSuccessSnackBar || successMessage != null))
+        ScaffoldMessenger.of(context).showSnackBar(_snackBar(message: successMessage));
     } catch (err) {
       closeloader();
       bool? retry;
@@ -40,7 +55,7 @@ Future<T?> showKLoadingProcess<T>(
         retry = await showKBottomErrorMessage(
           context,
           message: err.toString(),
-          retryable: true,
+          retryable: retryable,
           acceptText: acceptText,
           retryText: retryText,
         );

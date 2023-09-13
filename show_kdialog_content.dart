@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tareo_app/kdialogs/show_kdialog.dart';
 
 Future<T?> showKDialogContent<T>(
   BuildContext context, {
@@ -12,9 +11,10 @@ Future<T?> showKDialogContent<T>(
   bool closeOnOutsideTab = false,
   required Widget Function(BuildContext context) builder,
 }) async {
-  return await showKDialog(
-    context,
-    closeOnOutsideTab: closeOnOutsideTab,
+  return await showDialog(
+    context: context,
+    barrierDismissible: closeOnOutsideTab,
+    useSafeArea: true,
     builder: (context) {
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
